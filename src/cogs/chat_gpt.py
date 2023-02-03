@@ -4,6 +4,7 @@ import os
 from guesslang import Guess
 
 CHUNK_SIZE = 15
+PROB_THRESHOLD = 0.5
 
 openai.api_key = os.getenv("OPEN_AI_TOKEN")
 
@@ -14,6 +15,7 @@ class ChatGpt(commands.Cog):
 		self.client = client
 		self.chunk_size = CHUNK_SIZE
 		self.guess = Guess()
+		self.prob_threshold = PROB_THRESHOLD
 
 	@commands.Cog.listener()
 	async def on_ready(self):
@@ -42,10 +44,10 @@ class ChatGpt(commands.Cog):
 				await sent_message.edit(content=reply)
 
 		# Programming languages get a code block.
-		language = self.guess.language_name(reply)
-		if language != None:
-			await sent_message.edit(content="```{}".format(language) + reply +
-			                        "```")
+		probabilities = self.guess.probabilities(reply)
+		if probabilities[0][1] > self.prob_threshold:
+			await sent_message.edit(
+			    content="```{}".format(probabilities[0][0]) + reply + "```")
 		# Update the message with the last chunk.
 		else:
 			await sent_message.edit(content=reply)
