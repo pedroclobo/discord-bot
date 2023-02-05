@@ -300,7 +300,7 @@ class Music(commands.Cog):
 	def cog_check(self, ctx):
 		if not ctx.guild:
 			raise commands.NoPrivateMessage(
-			    "This command can\"t be used in DM channels.")
+			    "This command can\'t be used in DM channels.")
 
 		return True
 
@@ -371,7 +371,7 @@ class Music(commands.Cog):
 
 	@commands.command()
 	async def queue(self, ctx):
-		"""Show the player"s queue."""
+		"""Show the player's queue."""
 
 		if len(ctx.voice_state.songs) == 0:
 			return await ctx.send("Empty queue.")
@@ -404,8 +404,8 @@ class Music(commands.Cog):
 
 	@commands.command()
 	async def loop(self, ctx):
-		"""
-		Loop the currently playing song.
+		"""Loop the currently playing song.
+
         Invoking this command again will unloop the song.
         """
 
