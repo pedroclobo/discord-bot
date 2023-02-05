@@ -155,6 +155,21 @@ class Song:
 
 		return embed
 
+	def create_enqueued_embed(self):
+		embed = discord.Embed(title="Enqueued",
+		                      description=f"```\n{self.source.title}\n```",
+		                      color=discord.Color.gold())
+
+		embed.add_field(
+		    name="Uploader",
+		    value=f"[{self.source.uploader}]({self.source.uploader_url})")
+
+		embed.add_field(name="URL", value=f"[Click]({self.source.url})")
+
+		embed.set_thumbnail(url=self.source.thumbnail)
+
+		return embed
+
 
 class SongQueue(asyncio.Queue):
 
@@ -422,8 +437,11 @@ class Music(commands.Cog):
 			else:
 				song = Song(source)
 
+				queue_len = len(ctx.voice_state.songs)
 				await ctx.voice_state.songs.put(song)
-				await ctx.send(f"Enqueued {str(source)}")
+				if queue_len != 0 or (queue_len == 0
+				                      and ctx.voice_state.is_playing):
+					await ctx.send(embed=song.create_enqueued_embed())
 
 
 async def setup(client):
