@@ -123,19 +123,12 @@ class YTDLSource(discord.PCMVolumeTransformer):
 	def parse_duration(duration):
 		minutes, seconds = divmod(duration, 60)
 		hours, minutes = divmod(minutes, 60)
-		days, hours = divmod(hours, 24)
 
-		duration = []
-		if days:
-			duration.append(f"{days} days")
-		if hours:
-			duration.append(f"{hours} hours")
-		if minutes:
-			duration.append(f"{minutes} minutes")
-		if seconds:
-			duration.append(f"{seconds} seconds")
+		duration = f"{str(hours).zfill(2)}:" if hours else ""
+		duration += f"{str(minutes).zfill(2)}:"
+		duration += f"{str(seconds).zfill(2)}"
 
-		return ", ".join(duration)
+		return duration
 
 
 class Song:
@@ -144,14 +137,12 @@ class Song:
 		self.source = source
 		self.requester = source.requester
 
-	def create_embed(self):
+	def create_playing_embed(self):
 		embed = discord.Embed(title="Playing",
 		                      description=f"```\n{self.source.title}\n```",
 		                      color=discord.Color.gold())
 
 		embed.add_field(name="Duration", value=self.source.duration)
-
-		embed.add_field(name="Requested by", value=self.requester.mention)
 
 		embed.add_field(
 		    name="Uploader",
@@ -249,7 +240,7 @@ class VoiceState:
 			self.current.source.volume = self._volume
 			self.voice.play(self.current.source, after=self.play_next_song)
 			await self.current.source.channel.send(
-			    embed=self.current.create_embed())
+			    embed=self.current.create_playing_embed())
 
 			await self.next.wait()
 
@@ -329,7 +320,7 @@ class Music(commands.Cog):
 	async def now(self, ctx):
 		"""Display the currently playing song."""
 
-		await ctx.send(embed=ctx.voice_state.current.create_embed())
+		await ctx.send(embed=ctx.voice_state.current.create_playing_embed())
 
 	@commands.command()
 	async def pause(self, ctx):
