@@ -13,6 +13,7 @@ class Ping(commands.Cog):
 	# Get the bot ping.
 	@commands.command()
 	async def ping(self, ctx):
+		"""Get the bot's latency."""
 		bot_latency = round(self.client.latency * 1000)
 		await ctx.channel.send("My latency is {}ms".format(bot_latency))
 

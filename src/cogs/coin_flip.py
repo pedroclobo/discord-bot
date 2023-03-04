@@ -15,6 +15,7 @@ class CoinFlip(commands.Cog):
 	# Do a coin flip.
 	@commands.command()
 	async def coin(self, ctx):
+		"""Do a coin flip."""
 		await ctx.channel.send(random.choice(self.outcomes))
 
 

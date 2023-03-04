@@ -23,6 +23,7 @@ class ChatGpt(commands.Cog):
 
 	@commands.command()
 	async def ask(self, ctx, *, prompt):
+		"""Ask anything to ChatGPT."""
 		# Place holder for the reply.
 		sent_message = await ctx.send("Processing your request...")
 

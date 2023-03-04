@@ -16,6 +16,7 @@ class DallE(commands.Cog):
 
 	@commands.command()
 	async def image(self, ctx, *, message):
+		"""Get an image from Dall-E."""
 		async with ctx.channel.typing():
 			response = openai.Image.create(
 			    prompt=message,

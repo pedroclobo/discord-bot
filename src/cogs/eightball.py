@@ -24,6 +24,7 @@ class EightBall(commands.Cog):
 
 	@commands.command(aliases=["8ball"])
 	async def eightball(self, ctx, *, _):
+		"""Ask anything to 8ball."""
 		await ctx.channel.send(random.choice(self.answers))
 
 
