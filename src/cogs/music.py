@@ -5,7 +5,7 @@ import discord
 import functools
 import itertools
 import random
-import youtube_dl
+import yt_dlp as youtube_dl
 
 # Silence bug reports messages
 youtube_dl.utils.bug_reports_message = lambda: ""
